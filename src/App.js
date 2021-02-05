@@ -1,7 +1,6 @@
 import "./App.css";
 import HeaderNav from "./Component/Header";
 import { BrowserRouter as Router } from "react-router-dom";
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
