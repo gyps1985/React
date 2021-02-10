@@ -5,7 +5,7 @@ const TextControl = (props) => {
   return (
     <Form.Group controlId={props.ctrlNamr}>
       <Form.Label>{props.lblText}</Form.Label>
-      <Form.Control type="text" placeholder={props.placeholder} onChange={props.OnChange}></Form.Control>
+      <Form.Control type="text" placeholder={props.placeholder} onChange={props.OnChange} name={props.name}></Form.Control>
     </Form.Group>
   );
 };

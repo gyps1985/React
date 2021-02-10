@@ -1,7 +1,6 @@
-import { Button, Col, Container, Form } from "react-bootstrap";
+import { Button, Container, Form } from "react-bootstrap";
 
 import SearchDetails from "./SearchDetails";
-import TextControlRequired from "../../Controls/TextControlRequired";
 import { useState } from "react";
 
 const Search = () => {
