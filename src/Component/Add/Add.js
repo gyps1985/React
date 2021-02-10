@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button, Col, Container, Form } from "react-bootstrap";
 import TextControl from "../../Controls/TextControl";
 import TextControlRequired from "../../Controls/TextControlRequired";
+import axios from "axios";
 
 const Add = (props) => {
   const [isValid, checkValid] = useState(false);
@@ -20,6 +21,7 @@ const Add = (props) => {
     checkValid(true);
     console.log(data);
     event.preventDefault();
+    axios.post('/person', data).then(response=>console.log(response));
   };
 
   const OnChange = (e) => {
