@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Col, Container, Form } from "react-bootstrap";
 import TextControl from "../../Controls/TextControl";
 import TextControlRequired from "../../Controls/TextControlRequired";
 import axios from "axios";
+import DropDown from "../../Controls/DropDown";
 
 const Add = (props) => {
   const [isValid, checkValid] = useState(false);
@@ -11,17 +12,32 @@ const Add = (props) => {
     middlename: "",
     lastname: "",
   });
+  const [identifications,setIdentification] = useState([]);
+
+  useEffect(()=>{
+    axios.get('/identification').then(response=>{
+      if(response)
+      {
+        console.log(response.data);
+        //setIdentification(response.data.map(({id, description}) => ({id: id, description: description})));
+        setIdentification(response.data);
+        console.log(identifications);
+      }
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
-
+    event.preventDefault();
+    console.log(identifications);
     if (!form.checkValidity()) {
       event.stopPropagation();
     }
+    else{
+      axios.post('/person', data).then(response=>console.log(response));
+    }
     checkValid(true);
-    console.log(data);
-    event.preventDefault();
-    axios.post('/person', data).then(response=>console.log(response));
   };
 
   const OnChange = (e) => {
@@ -60,6 +76,9 @@ const Add = (props) => {
               OnChange={OnChange}
               name="lastname"
             ></TextControlRequired>
+          </Col>
+          <Col xs="auto">
+            <DropDown options={identifications} name='Identification Id'></DropDown>
           </Col>
         </Form.Row>
         <Button variant="primary" type="submit">
