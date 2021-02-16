@@ -3,8 +3,9 @@
     height: 100%;
     margin: 0.5rem;
     background-color: #eee;
-    display: inline-block;
+    display: inline-block; 
     padding-top: 1rem;
+    align-content: space-between;
 }
 .btn {
     width: 25%;
