@@ -1,85 +1,98 @@
+import './search.css'
+
 import { Button, Container, Form } from "react-bootstrap";
 
 import SearchDetails from "./SearchDetails";
+import axios from "axios";
 import { useState } from "react";
 
 const Search = () => {
-  const details = [
-    {
-      id: 1,
-      firstName: "testFirst1",
-      middleName: "testMiddle1",
-      lastName: "testLast1",
-    },
-    {
-      id: 2,
-      firstName: "testFirst2",
-      middleName: "testMiddle2",
-      lastName: "testLast2",
-    },
-    {
-      id: 3,
-      firstName: "testFirst3",
-      middleName: "testMiddle3",
-      lastName: "testLast3",
-    },
-  ];
-  const [searchResult, setSearchResult] = useState([...details]);
-  const [firstName, setFirstName] = useState("");
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (firstName && firstName.trim().length > 0) {
-      const filteredResult = details.filter(
-        (detail) =>
-          detail.firstName.trim().toLowerCase() ===
-          firstName.trim().toLocaleLowerCase()
-      );
-      setSearchResult([...filteredResult]);
-    }
-    else{
-        alert('Please Enter First Name to Search')
-    }
+  const [id, setId] = useState("");
+  const [searchAll, setSearchAll] = useState(false);
+  const [searchResult, setSearchResult] = useState([
+    { firstname: "", middlename: "", lastname: "", id: "" },
+  ]);
+
+  const getData = async (id)=> {
+    var url = "http://localhost:5000/person";
+    var result = [];
+    if (id) url = `${url}/${id}`;
+    await axios.get(url).then((response) => {
+      console.log(response.data);
+      
+      result = Array.isArray(response.data) ? response.data : [response.data];
+    }).catch((ex)=> {console.log(ex);result = [];});
+    return result;
   };
+
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    var filteredResult = [];
+    console.log(`searchAll   :::  ${searchAll}`);
+    if(searchAll)
+    {
+    filteredResult = await getData();
+    }
+    else if (id && id.trim().length > 0 && !searchAll ) {
+      filteredResult = await getData(id);
+
+    } else {
+      alert("Please Enter First Name to Search");
+    }
+    console.log('result is ');
+    console.log([filteredResult]);
+    setSearchResult(...[filteredResult]);
+  };
+
   const handleReset = (event) => {
     event.preventDefault();
-    setFirstName('');
-    setSearchResult([...details]);
-  }
+    setId("");
+    setSearchResult([]);
+    setSearchAll(false);
+  };
   const columns = [
     {
-      Header: "id",
+      Header: "Id",
       accessor: "id",
     },
     {
       Header: "First Name",
-      accessor: "firstName",
+      accessor: "firstname",
     },
     {
       Header: "Middle Name",
-      accessor: "middleName",
+      accessor: "middlename",
     },
     {
       Header: "Last Name",
-      accessor: "lastName",
+      accessor: "lastname",
     },
   ];
   return (
-    <Container>
+    <Container className='block-border'>
       <Form.Group>
         <Form.Control
-          placeholder="Enter First Name"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
+          placeholder="Enter Id"
+          value={id}
+          onChange={(e) => setId(e.target.value)}
           type="text"
         />
+        <Form.Check 
+    type="switch"
+    id="searchAllSwitch"
+    checked = {searchAll}
+    onChange={(e) => setSearchAll(e.currentTarget.checked)}
+    label="Search All"
+  />
         <div>
-        <Button variant="primary" onClick={handleSubmit}>
-          Search
-        </Button>
-        <Button variant="primary" onClick={handleReset}>
-          Reset
-        </Button>
-        </div> 
+          <Button variant="primary" onClick={handleSubmit} className="btn">
+            Search
+          </Button>
+          <Button variant="primary" onClick={handleReset} className="btn">
+            Reset
+          </Button>
+        </div>
       </Form.Group>
       <SearchDetails columns={columns} data={searchResult} />
     </Container>
