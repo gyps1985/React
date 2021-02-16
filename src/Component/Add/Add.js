@@ -11,6 +11,7 @@ const Add = (props) => {
     firstname: "",
     middlename: "",
     lastname: "",
+    identificationId: 1
   });
   const [identifications,setIdentification] = useState([]);
 
@@ -18,16 +19,14 @@ const Add = (props) => {
     axios.get('/identification').then(response=>{
       if(response)
       {
-        console.log(response.data);
-        //setIdentification(response.data.map(({id, description}) => ({id: id, description: description})));
         setIdentification(response.data);
-        console.log(identifications);
       }
     })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
   const handleSubmit = (event) => {
+    alert('Handle Submit');
     const form = event.currentTarget;
     event.preventDefault();
     console.log(identifications);
@@ -40,7 +39,8 @@ const Add = (props) => {
     checkValid(true);
   };
 
-  const OnChange = (e) => {
+  const handleChange = (e) => {
+    alert(e.target.value);
     setData({...data, [e.target.name]: e.target.value });
   };
 
@@ -54,7 +54,7 @@ const Add = (props) => {
               lblText="First Name"
               placeholder="Enter First Name"
               inValidMessage="First Name is required"
-              OnChange={OnChange}
+              OnChange={handleChange}
               name="firstname"
             ></TextControlRequired>
           </Col>
@@ -63,7 +63,7 @@ const Add = (props) => {
               controlId="midNameCtrl"
               lblText="Middle Name"
               placeholder="Enter Middle Name"
-              OnChange={OnChange}
+              OnChange={handleChange}
               name="middlename"
             ></TextControl>
           </Col>
@@ -73,12 +73,12 @@ const Add = (props) => {
               lblText="Last Name"
               placeholder="Enter Last Name"
               inValidMessage="Last Name is required"
-              OnChange={OnChange}
+              OnChange={handleChange}
               name="lastname"
             ></TextControlRequired>
           </Col>
           <Col xs="auto">
-            <DropDown options={identifications} name='Identification Id'></DropDown>
+            <DropDown options={identifications} lblText='Identification Id' name='identificationId' onChange={handleChange}></DropDown>
           </Col>
         </Form.Row>
         <Button variant="primary" type="submit">

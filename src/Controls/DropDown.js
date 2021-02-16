@@ -3,8 +3,8 @@ import { Form } from "react-bootstrap";
 const DropDown = (props) => {
   return (
     <Form.Group>
-      <Form.Label>{props.name}</Form.Label>
-      <Form.Control as="select">
+      <Form.Label>{props.lblText}</Form.Label>
+      <Form.Control as="select" onChange={props.onChange}>
         {props.options.map((option) => {
           return <option key={option.id} value={option.id}>{option.description}</option>;
         })}

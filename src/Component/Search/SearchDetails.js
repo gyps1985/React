@@ -26,8 +26,8 @@ const SearchDetails = ({columns, data}) => {
   });
   return (
     <React.Fragment>
-    {!data || data.length > 0 ? <table {...getTableProps()} striped bordered hover>
-        <thead>
+    {!data || data.length > 0 ? <table {...getTableProps()} className='table'>
+        <thead style={{backgroundColor:"darkGrey"}}>
         {headerGroups.map(headerGroup => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map(column => (
