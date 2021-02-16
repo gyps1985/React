@@ -4,4 +4,4 @@ const savePerson = (data)=>{
     axios.post('/person', data).then(response=>console.log(response));
 }
 
-export default savePerson;
+export default savePerson
