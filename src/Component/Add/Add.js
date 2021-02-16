@@ -7,13 +7,14 @@ import DropDown from "../../Controls/DropDown";
 import Toastr from "../../Controls/Toastr";
 import addReducer from "../Add/Reducer/addReducer";
 
-const Add = (props) => {
+const Add = () => {
   const initialState = {
     data:{
       firstname: "",
       middlename: "",
       lastname: "",
-      identificationId: 1
+      identificationType: 1,
+      identificationId:''
     },
     isNotification : false,
     notifiedMessage: {type:'', message:''}
@@ -34,7 +35,6 @@ const Add = (props) => {
   },[]);
 
   const handleSubmit = (event) => {
-    console.log(state);
     const form = event.currentTarget;
     event.preventDefault();
     if (!form.checkValidity()) {
@@ -43,7 +43,7 @@ const Add = (props) => {
     else{
       axios.post('/person', state.data).then(response=>{
         if(response.data){
-          dispatch({type:'Success Message', payload:{...state, isNotification: true, notifiedMessage:{
+          dispatch({type:'Message', payload:{...state, isNotification: true, notifiedMessage:{
             type:'Success',
             message: 'Successfully added'
           }}})
@@ -99,8 +99,20 @@ const Add = (props) => {
               name="lastname"
             ></TextControlRequired>
           </Col>
+          </Form.Row>
+          <Form.Row>
           <Col xs="auto">
-            <DropDown options={identifications} lblText='Identification Id' name='identificationId' onChange={handleChange}></DropDown>
+            <DropDown options={identifications} lblText='Identification Type' name='identificationType' onChange={handleChange}></DropDown>
+          </Col>
+          <Col xs="auto">
+            <TextControlRequired
+              controlId="identificationIdCtrl"
+              lblText="Identification Id"
+              placeholder="Enter Identification Id"
+              inValidMessage="Identification Id is required"
+              OnChange={handleChange}
+              name="identificationId"
+            ></TextControlRequired>
           </Col>
         </Form.Row>
         <Button variant="primary" type="submit">
