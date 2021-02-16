@@ -1,0 +1,12 @@
+.block-border {
+    width: 50rem;
+    height: 100%;
+    margin: 0.5rem;
+    background-color: #eee;
+    display: inline-block;
+    padding-top: 1rem;
+}
+.btn {
+    width: 25%;
+    margin: 0.5rem;
+  }
