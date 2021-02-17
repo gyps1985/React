@@ -4,7 +4,7 @@ export const emptySearchObject = {
     lastname: "",
     id: "",
     identificationType: "",
-    idenficationId: "",
+    identificationId: "",
   };
   export const columns = [
     {
@@ -24,8 +24,8 @@ export const emptySearchObject = {
       accessor: "lastname",
     },
     {
-      Header:"Id",
-      accessor: "idenficationId",
+      Header:"Identification Id",
+      accessor: "identificationId",
     }
   ];
   export const noneDropDownObject = [{id:0,description:'None'}];
