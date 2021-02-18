@@ -9,6 +9,7 @@ const TextControlRequired = (props) => {
         placeholder={props.placeholder}
         required onChange={props.OnChange}
         name={props.name}
+        value={props.value} 
       ></Form.Control>
       <Form.Control.Feedback type="invalid">
         {props.inValidMessage}
