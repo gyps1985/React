@@ -1,7 +1,11 @@
 import "./search.css";
 
 import { Button, Container, Form } from "react-bootstrap";
-import { columns, emptySearchObject, noneDropDownObject } from './searchDefaults';
+import {
+  columns,
+  emptySearchObject,
+  noneDropDownObject,
+} from "./searchDefaults";
 import { useEffect, useState } from "react";
 
 import DropDown from "../../Controls/DropDown";
@@ -11,19 +15,19 @@ import axios from "axios";
 const Search = () => {
   const [id, setId] = useState("");
   const [searchAll, setSearchAll] = useState(false);
-  const [selectedIdentification, setSelectedIdentification] = useState({id:"", description:""});
-  const [searchResult, setSearchResult] = useState([
-    emptySearchObject
-  ]);
+  const [selectedIdentification, setSelectedIdentification] = useState({
+    id: "",
+    description: "",
+  });
+  const [searchResult, setSearchResult] = useState([emptySearchObject]);
   const [identifications, setIdentification] = useState([]);
   useEffect(() => {
     axios.get("/identification").then((response) => {
       if (response) {
         console.log(response.data);
         console.log(noneDropDownObject);
-        console.log([...noneDropDownObject,...response.data]);
+        console.log([...noneDropDownObject, ...response.data]);
         setIdentification([...noneDropDownObject, ...response.data]);
-
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -33,7 +37,8 @@ const Search = () => {
     var url = "http://localhost:5000/person";
     var result = [];
     if (id) url = `${url}/${id}`;
-    if((!id || id.trim().length <= 0) && identificationType) url = `${url}/?identificationType=${identificationType}`;
+    if ((!id || id.trim().length <= 0) && identificationType)
+      url = `${url}/?identificationType=${identificationType}`;
     await axios
       .get(url)
       .then((response) => {
@@ -48,17 +53,34 @@ const Search = () => {
     return result;
   };
 
-  const handleSubmit = async (event) => {
+  const deleteData = async (id) => {
+    var url = `http://localhost:5000/person/${id}`;
+    await axios
+      .delete(url)
+      .then((response) => response && console.log("Deleted the record"));
+  };
+  const handleSubmit = (event) => {
     event.preventDefault();
+    searchRecords()
+  };
+
+  const searchRecords = async() =>{
     var filteredResult = [];
-    console.log(`selectedIdentification   :::  ${selectedIdentification.description}`);
+    console.log(
+      `selectedIdentification   :::  ${selectedIdentification.description}`
+    );
     console.log(selectedIdentification);
     if (searchAll) {
       filteredResult = await getData();
-    } else if (id && id.trim().length > 0 && !searchAll && selectedIdentification.id <= 0) {
+    } else if (
+      id &&
+      id.trim().length > 0 &&
+      !searchAll &&
+      selectedIdentification.id <= 0
+    ) {
       filteredResult = await getData(id);
     } else if (!searchAll && selectedIdentification.id > 0) {
-      filteredResult = await getData('',selectedIdentification.id); 
+      filteredResult = await getData("", selectedIdentification.id);
     } else {
       alert("Please Enter First Name or Identification to Search");
       return;
@@ -66,8 +88,7 @@ const Search = () => {
     console.log("result is ");
     console.log(filteredResult);
     setSearchResult(...[filteredResult]);
-  };
-
+  }
   const handleReset = (event) => {
     event.preventDefault();
     setId("");
@@ -75,10 +96,18 @@ const Search = () => {
     setSearchAll(false);
   };
   const handleDDChange = (e) => {
-    const {options, value} = e.target;
-    setSelectedIdentification({id:e.target.value,description:options[value].label});
+    const { options, value } = e.target;
+    setSelectedIdentification({
+      id: e.target.value,
+      description: options[value].label,
+    });
   };
-  
+
+  const handleDelete = (id) => {
+    console.log(`Id is : ${id}`);
+    deleteData(id);
+    searchRecords();
+  };
   return (
     <Container className="block-border">
       <Form.Group>
@@ -110,7 +139,11 @@ const Search = () => {
           </Button>
         </div>
       </Form.Group>
-      <SearchDetails columns={columns} data={searchResult} />
+      <SearchDetails
+        columns={columns}
+        data={searchResult}
+        onDelete={handleDelete}
+      />
     </Container>
   );
 };

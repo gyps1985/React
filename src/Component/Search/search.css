@@ -11,3 +11,13 @@
     width: 25%;
     margin: 0.5rem;
   }
+.editBtn{
+    background-color: blue;
+    color: white;
+    width: 50%;
+}
+.deleteBtn{
+    background-color: red;
+    color: white;
+    width: 50%;
+}

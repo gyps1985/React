@@ -1,8 +1,10 @@
-import { Switch, Route } from "react-router-dom";
-import { Navbar, Nav } from "react-bootstrap";
+import { Nav, Navbar } from "react-bootstrap";
+import { Route, Switch } from "react-router-dom";
+
 import About  from "./About/About";
-import Search from "./Search/Search";
 import Add from "./Add/Add";
+import PageNotFound from './PageNotFound';
+import Search from "./Search/Search";
 
 const HeaderNav = () => {
   return (
@@ -19,15 +21,11 @@ const HeaderNav = () => {
         </Navbar.Collapse>
       </Navbar>
       <Switch>
-        <Route path="/" exact>
-          <About></About>
-        </Route>
-        <Route path="/search">
-          <Search></Search>
-        </Route>
-        <Route path="/add">
-          <Add></Add>
-        </Route>
+        <Route path="/" exact component ={About}/>
+        <Route path="/search" component ={Search}/>
+        <Route path="/add"component ={Add}/>
+
+        <Route component={PageNotFound} />
       </Switch>
     </>
   );
